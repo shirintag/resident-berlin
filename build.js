@@ -17,7 +17,7 @@ if (process.env.NODE_ENV == 'production') {
 }
 
 const conf = {
-    entry: __dirname + '/src/start.js',
+    entry: __dirname + '/src/index.js',
     output: {
         path: __dirname + '/public/',
         filename: 'bundle.js'

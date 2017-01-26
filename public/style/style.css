@@ -1,0 +1,7 @@
+.map{
+    position: absolute;
+    z-index: -1;
+}
+.login {
+    z-index: 1;
+}

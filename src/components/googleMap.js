@@ -1,8 +1,8 @@
-import React from 'react'
+import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
-import Map, {GoogleApiWrapper, maps} from 'google-maps-react';
+import Map, {GoogleApiWrapper, maps, Marker} from 'google-maps-react';
 import mapStyle from "./map_style"
-
+//https://github.com/fullstackreact/google-maps-react/issues/59
 export class Container extends React.Component {
     componentDidMount() {
     console.log('qui puoi fare console.log');
@@ -17,14 +17,24 @@ export class Container extends React.Component {
         // }
 
         return (
+
             <Map
-                google={window.google}
-                zoom={13}
-                styles={mapStyle}
-                initialCenter={{lat: 52.519616, lng: 13.414064}}
-                disableDefaultUI= {true}
-              />
-    )
+            google={window.google}
+            zoom={13}
+            styles={mapStyle}
+            initialCenter={{lat: 52.519616, lng: 13.414064}}
+            disableDefaultUI= {true}
+            >
+            <Marker position={{lat: 52.519616, lng: 13.414064}} />
+
+
+            </Map>
+            //<Marker position={{lat: 52.519616, lng: 13.414064}} />
+
+
+
+        )
+
   }
 }
 
