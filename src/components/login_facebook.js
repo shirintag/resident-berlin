@@ -1,7 +1,7 @@
 import React from 'react';
 import FacebookLogin from 'react-facebook-login';
 
-class MyComponent extends React.Component {
+class FBLogin extends React.Component {
     constructor(props) {
         super(props);
 
@@ -13,7 +13,6 @@ class MyComponent extends React.Component {
 
     render() {
       return (
-        <div className="login">
         <FacebookLogin
           appId="960532494079095"
           autoLoad={true}
@@ -21,8 +20,7 @@ class MyComponent extends React.Component {
           scope="public_profile,user_friends, user_events"
           callback={this.responseFacebook}
         />
-        </div>
       )
     }
   }
-export default MyComponent;
+export default FBLogin;

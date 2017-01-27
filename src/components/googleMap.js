@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 import Map, {GoogleApiWrapper, maps, Marker} from 'google-maps-react';
 import mapStyle from "./map_style"
 //https://github.com/fullstackreact/google-maps-react/issues/59
-export class Container extends React.Component {
+export class MyMap extends React.Component {
     componentDidMount() {
     console.log('qui puoi fare console.log');
   }
@@ -40,4 +40,4 @@ export class Container extends React.Component {
 
 export default GoogleApiWrapper({
     apiKey: "AIzaSyD1gktLYHktL4HBVTsR-1zjNyPBUwdVjV0"
-})(Container)
+})(MyMap)
