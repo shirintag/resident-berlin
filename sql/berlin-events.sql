@@ -1,0 +1,20 @@
+DROP TABLE IF EXISTS events;
+DROP TABLE IF EXISTS users;
+
+CREATE TABLE events(
+    id SERIAL PRIMARY KEY,
+    link VARCHAR(300) NOT NULL,
+    title VARCHAR(255) NOT NULL,
+    description TEXT,
+    username VARCHAR(300) NOT NULL,
+    user_id INTEGER NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE users(
+    id SERIAL PRIMARY KEY,
+    username VARCHAR(300) NOT NULL,
+    email VARCHAR(255) UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
