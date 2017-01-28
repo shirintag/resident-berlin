@@ -25,7 +25,9 @@ export class MyMap extends React.Component {
             initialCenter={{lat: 52.519616, lng: 13.414064}}
             disableDefaultUI= {true}
             >
-            <Marker position={{lat: 52.519616, lng: 13.414064}} />
+            <Marker
+                position={{lat: 52.519616, lng: 13.414064}}
+                icon="imgs/icon.png"/>
 
 
             </Map>
