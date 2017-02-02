@@ -3,12 +3,8 @@ import FacebookLogin from 'react-facebook-login';
 
 class FBLogin extends React.Component {
     constructor(props) {
+        console.log(props);
         super(props);
-
-        this.responseFacebook = (response) => {
-            console.log(response);
-            return "localhost:8080"
-        }
     }
 
     render() {
@@ -18,9 +14,20 @@ class FBLogin extends React.Component {
           autoLoad={true}
           fields="name,email,picture"
           scope="public_profile,user_friends, user_events"
-          callback={this.responseFacebook}
+          callback={this.props.callback}
         />
       )
     }
   }
 export default FBLogin;
+
+// FB.login(function(response) {
+//     if (response.authResponse) {
+//      console.log('Welcome!  Fetching your information.... ');
+//      FB.api('/me', function(response) {
+//        console.log('Good to see you, ' + response.name + '.');
+//      });
+//     } else {
+//      console.log('User cancelled login or did not fully authorize.');
+//     }
+// });

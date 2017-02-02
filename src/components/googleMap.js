@@ -1,23 +1,36 @@
-import React, { Component } from 'react'
-import ReactDOM from 'react-dom'
+import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
 import Map, {GoogleApiWrapper, maps, Marker} from 'google-maps-react';
-import mapStyle from "./map_style"
+import mapStyle from "./map_style";
 //https://github.com/fullstackreact/google-maps-react/issues/59
+
 export class MyMap extends React.Component {
-    componentDidMount() {
-    console.log('qui puoi fare console.log');
-  }
+    constructor(props){
+        super(props);
+
+        this.state = {};
+
+    }
+
+    componentWillReceiveProps(nextProps, i){
+        // console.log(nextProps.events.data, "this is mymap");
+        this.setState({
+            events: nextProps.events.data
+        });
+    }
+
+    onMarkerClick(e){
+        // this.setState({
+        // activeMarker: marker,
+        // showingInfoWindow: true
+        // });
+    }
+
     render() {
-        // const style = {
-        //     // position: 'fixed',
-        //     // 'z-index': -1000,
-        //     // top: 0,
-        //     // left: 0,
-        //     // margin: '0px'
-        // }
+        // console.log(window.google)
+        let google = window.google
 
         return (
-
             <Map
             google={window.google}
             zoom={13}
@@ -25,21 +38,33 @@ export class MyMap extends React.Component {
             initialCenter={{lat: 52.519616, lng: 13.414064}}
             disableDefaultUI= {true}
             >
-            <Marker
-                position={{lat: 52.519616, lng: 13.414064}}
-                icon="imgs/icon.png"/>
-
+                {this.props.events.data && this.props.events.data.filter(function(event) {
+                    if (!event.place || !event.place.location) {
+                        return false;
+                    }
+                    return true;
+                }).map((event) => {
+                    console.log(event, "this is event in map");
+                    return (
+                        <Marker
+                        onClick={this.onMarkerClick}
+                        position={{lat: event.place.location.latitude, lng: event.place.location.longitude}}
+                        icon={{
+                            url: "imgs/icon.png",
+                            scaledSize: google ? new google.maps.Size(30,50) : null
+                        }}
+                        />
+                    );
+                })}
 
             </Map>
-            //<Marker position={{lat: 52.519616, lng: 13.414064}} />
-
-
-
         )
+    }
 
-  }
+
 }
 
 export default GoogleApiWrapper({
-    apiKey: "AIzaSyD1gktLYHktL4HBVTsR-1zjNyPBUwdVjV0"
+    apiKey: "AIzaSyD1gktLYHktL4HBVTsR-1zjNyPBUwdVjV0",
+    version: 3.26
 })(MyMap)
