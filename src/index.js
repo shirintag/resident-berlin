@@ -3,7 +3,7 @@ import ReactDom from "react-dom";
 import MyMap from "./components/googleMap";
 import FBLogin from "./components/login_facebook";
 import FacebookLogin from 'react-facebook-login';
-import FBEvents from "./components/events";
+import NavBar from "./components/NavBar";
 
 class  App extends Component {
     constructor(props){
@@ -30,7 +30,7 @@ class  App extends Component {
 
     getEvents(){
         FB.api('me/events', (res) => {
-            console.log(res);
+            // console.log(res);
             this.setState({
                 events: res
             });
@@ -41,6 +41,7 @@ class  App extends Component {
   render() {
     return (
       <div>
+          <NavBar />
           <div className="map">
               <MyMap events={this.state.events}/>
           </div>
@@ -56,5 +57,5 @@ FB.init({
     xfbml      : true,
     version    : 'v2.8'
 });
-console.log(window.google)
+// console.log(window.google)
 ReactDom.render(<App />, document.querySelector(".app"));

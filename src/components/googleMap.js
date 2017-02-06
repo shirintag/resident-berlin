@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import Map, {GoogleApiWrapper, maps, Marker, InfoWindow} from 'google-maps-react';
-// import mapStyle from "./map_style";
+import mapStyle from "./map_style";
 //https://github.com/fullstackreact/google-maps-react/issues/59
-import mapStyle from "./InfoWindow";
 
 export class MyMap extends React.Component {
     constructor(props){
@@ -12,7 +11,6 @@ export class MyMap extends React.Component {
         this.state = {
             events:{},
             showingInfoWindow: false,
-            activeMarker: {},
             selectedPlace: {},
         };
         this.onMarkerClick = this.onMarkerClick.bind(this);
@@ -26,9 +24,9 @@ export class MyMap extends React.Component {
     }
 
     onMarkerClick(props, marker, e) {
-        console.log('hey');
+        console.log(props);
         this.setState({
-            selectedPlace: props,
+            selectedPlace: props.data,
             activeMarker: marker,
             showingInfoWindow: true
         });
@@ -37,48 +35,56 @@ export class MyMap extends React.Component {
     render() {
         // console.log(window.google)
         let google = window.google
-
-        return (
-            <Map
-            google={window.google}
-            zoom={13}
-            styles={mapStyle}
-            initialCenter={{lat: 52.519616, lng: 13.414064}}
-            disableDefaultUI= {true}
-            >
-            {
-                // {this.props.events.data && this.props.events.data.filter(function(event) {
-                //     if (!event.place || !event.place.location) {
-                //         return false;
-                //     }
-                //     return true;
-                // }).map((event) => {
-                //     console.log(event, "this is event in map");
-                //     return (
-                //         <Marker
-                //         onClick={this.onMarkerClick}
-                //         position={{lat: event.place.location.latitude, lng: event.place.location.longitude}}
-                //         icon={{
-                //             url: "imgs/icon.png",
-                //             scaledSize: google ? new google.maps.Size(30,50) : null
-                //         }}
-                //         />
-                //     );
-                // })}
+        const events = this.props.events.data && this.props.events.data.filter(function(event) {
+            // console.log(event, "this is events after filter");
+            if (!event.place || !event.place.location) {
+                return false;
             }
+            return true;
+        });
 
-                <Marker
+        // console.log(events, 1);
+
+        const MapFuncMarkers = events && events.map((event, i) => {
+                // console.log(event, "this is event in map");
+                return (
+                    <Marker
                     onClick={this.onMarkerClick}
-                    position={{lat: 52.519616, lng: 13.414064}}
-                    name={'Current location'} />
+                    position={{lat: event.place.location.latitude, lng: event.place.location.longitude}}
+                    name={'event' + i}
+                    icon={{
+                        url: "imgs/icon.png",
+                        scaledSize: google ? new google.maps.Size(30,50) : null
+                    }}
+                    data={event}
+                    />
+                );
+            });
 
+            const infoWindow =
                 <InfoWindow
+
                     marker={this.state.activeMarker}
                     visible={this.state.showingInfoWindow}>
                     <div>
-                        <h1>"hello"</h1>
+                        <h4>"name: "{this.state.selectedPlace.name}</h4>
+                        <h6>"start_time & end_time" {this.state.selectedPlace.start_time} {this.state.selectedPlace.end_time}</h6>
+                        <p>"description: " {this.state.selectedPlace.description}</p>
                     </div>
-                </InfoWindow>
+
+              </InfoWindow>;
+
+        MapFuncMarkers && MapFuncMarkers.push(infoWindow);
+
+        return (
+            <Map
+                google={window.google}
+                zoom={13}
+                styles={mapStyle}
+                initialCenter={{lat: 52.519616, lng: 13.414064}}
+                disableDefaultUI= {true}
+                >
+                {MapFuncMarkers}
 
             </Map>
         )
