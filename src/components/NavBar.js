@@ -2,15 +2,12 @@ var React = require('react');
 
 var NavBar = React.createClass({
   render: function () {
-    var pages = ['home', 'blog', 'pics', 'bio', 'art', 'shop', 'about', 'contact'];
+    var pages = ['about', 'contact', 'login'];
     var navLinks = pages.map(function(page){
       return (
-        <a href={'/' + page}>
-          {page}
-        </a>
+        <button className="btn btn-link"><a href={'/' + page}> {page}</a></button>
       );
     });
-
     return <nav>{navLinks}</nav>;
   }
 });

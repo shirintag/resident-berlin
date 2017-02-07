@@ -11,6 +11,7 @@ class  App extends Component {
 
         this.state = {
             events: [],
+            PicturesEvents: [],
             loginData: null
         };
 
@@ -19,13 +20,15 @@ class  App extends Component {
     }
 
     saveLoginData(response) {
-        console.log(response);
+        console.log(response, "this is saveLoginData");
         // console.log(this.state);
         this.setState({
             loginData: response
         });
         this.getEvents();
         return "localhost:8080"
+
+
     }
 
     getEvents(){
@@ -41,13 +44,14 @@ class  App extends Component {
   render() {
     return (
       <div>
-          <NavBar />
-          <div className="map">
-              <MyMap events={this.state.events}/>
-          </div>
-          <div className="login">
-              <FBLogin callback={this.saveLoginData} />
-          </div>
+            <div className='nav'>
+                <div className='button'><NavBar /></div>
+                <div className='login'><FBLogin callback={this.saveLoginData} /></div>
+            </div>
+
+            <div className="map">
+                <MyMap events={this.state.events}/>
+            </div>
       </div>
     );
   }

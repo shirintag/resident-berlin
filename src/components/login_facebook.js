@@ -10,11 +10,11 @@ class FBLogin extends React.Component {
     render() {
       return (
         <FacebookLogin
-          appId="960532494079095"
-          autoLoad={true}
-          fields="name,email,picture"
-          scope="public_profile,user_friends, user_events"
-          callback={this.props.callback}
+            appId="960532494079095"
+            autoLoad={true}
+            fields="name,email,picture"
+            scope="public_profile, user_friends, user_events, events"
+            callback={this.props.callback}
         />
       )
     }

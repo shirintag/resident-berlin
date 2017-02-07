@@ -12,6 +12,7 @@ export class MyMap extends React.Component {
             events:{},
             showingInfoWindow: false,
             selectedPlace: {},
+            eventPicture: ""
         };
         this.onMarkerClick = this.onMarkerClick.bind(this);
     }
@@ -23,8 +24,19 @@ export class MyMap extends React.Component {
         });
     }
 
+    getPhotoEvents(id){
+        FB.api(id + "/picture?type=large", (response) => {
+            if (response && !response.error){
+                this.setState({
+                    eventPicture: response.data.url
+                });
+            }
+        });
+    }
+
     onMarkerClick(props, marker, e) {
         console.log(props);
+        this.getPhotoEvents(props.data.id)
         this.setState({
             selectedPlace: props.data,
             activeMarker: marker,
@@ -61,18 +73,18 @@ export class MyMap extends React.Component {
                 );
             });
 
-            const infoWindow =
-                <InfoWindow
+        const infoWindow =
+            <InfoWindow
+                marker={this.state.activeMarker}
+                visible={this.state.showingInfoWindow}>
+                <div>
+                    <img src={this.state.eventPicture}/>
+                    <h4>"name: "{this.state.selectedPlace.name}</h4>
+                    <h6>"start_time & end_time" {this.state.selectedPlace.start_time} {this.state.selectedPlace.end_time}</h6>
+                    <p>"description: " {this.state.selectedPlace.description}</p>
+                </div>
 
-                    marker={this.state.activeMarker}
-                    visible={this.state.showingInfoWindow}>
-                    <div>
-                        <h4>"name: "{this.state.selectedPlace.name}</h4>
-                        <h6>"start_time & end_time" {this.state.selectedPlace.start_time} {this.state.selectedPlace.end_time}</h6>
-                        <p>"description: " {this.state.selectedPlace.description}</p>
-                    </div>
-
-              </InfoWindow>;
+          </InfoWindow>;
 
         MapFuncMarkers && MapFuncMarkers.push(infoWindow);
 
@@ -89,8 +101,6 @@ export class MyMap extends React.Component {
             </Map>
         )
     }
-
-
 }
 
 export default GoogleApiWrapper({
