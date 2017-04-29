@@ -25,6 +25,7 @@
     "csurf": "^1.9.0",
     "express": "^4.14.0",
     "google-maps-react": "^1.0.19",
+    "mongodb": "^2.2.26",
     "react": "^15.4.1",
     "react-dom": "^15.4.1",
     "react-facebook-login": "^3.4.3",
@@ -46,6 +47,7 @@
   "homepage": "https://github.com/shirintag/resident-berlin",
   "description": "",
   "devDependencies": {
+    "babel-plugin-transform-object-assign": "^6.22.0",
     "babel-plugin-transform-runtime": "^6.22.0"
   }
 }
