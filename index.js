@@ -2,13 +2,16 @@ const express = require('express');
 const MongoClient = require('mongodb').MongoClient
     , assert = require('assert');
 const app = express();
-
+var db_url;
 
 if (process.env.NODE_ENV != 'production') {
     app.use(require('./build'));
-    const db_url = 'mongodb://127.0.0.1:27017/resident-berlin';
+}
+
+if (typeof process.env.MONGO_URL == 'undefined') {
+    db_url = 'mongodb://127.0.0.1:27017/resident-berlin';
 } else {
-    const db_url = process.env.MONGO_URL;
+    db_url = process.env.MONGO_URL;
 }
 
 app.use(express.static(__dirname + '/public'));
