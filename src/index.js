@@ -5,6 +5,7 @@ import FBLogin from "./components/login_facebook";
 import FacebookLogin from 'react-facebook-login';
 import NavBar from "./components/NavBar";
 import 'whatwg-fetch';
+import { Map, Marker, Popup, TileLayer } from 'react-leaflet';
 
 class  App extends Component {
     constructor(props){
@@ -60,17 +61,19 @@ class  App extends Component {
     }
 
   render() {
+    const position = [51.505, -0.09];
     return (
-      <div>
-            <div className='nav'>
-                <div className='button'><NavBar /></div>
-                <div className='login'><FBLogin callback={this.saveLoginData} /></div>
-            </div>
-
-            <div className="map">
-                <MyMap events={{"data": this.state.events}}/>
-            </div>
-      </div>
+        <Map center={position} zoom={13}>
+            <TileLayer
+                url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'
+                attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+            />
+            <Marker position={position}>
+                <Popup>
+                    <span>A pretty CSS3 popup.<br/>Easily customizable.</span>
+                </Popup>
+            </Marker>
+        </Map>
     );
   }
 }
