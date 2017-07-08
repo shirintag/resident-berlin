@@ -1,24 +1,22 @@
 const express = require('express');
+const MongoClient = require('mongodb').MongoClient
+    , assert = require('assert');
 const app = express();
 
 
 if (process.env.NODE_ENV != 'production') {
     app.use(require('./build'));
+    const db_url = 'mongodb://127.0.0.1:27017/resident-berlin';
+} else {
+    const db_url = process.env.MONGO_URL;
 }
 
 app.use(express.static(__dirname + '/public'));
 
-
-
-const MongoClient = require('mongodb').MongoClient
-    , assert = require('assert');
-const url = 'mongodb://127.0.0.1:27017/resident-berlin';
-
-
 app.get('/api/events/:date', function (req, res) {
     let date = new Date(req.params.date);
 
-    MongoClient.connect(url, function (err, db) {
+    MongoClient.connect(db_url, function (err, db) {
         assert.equal(null, err);
         console.log("Connected successfully to server");
         let events = db.collection('events');
