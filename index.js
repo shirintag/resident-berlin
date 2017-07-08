@@ -1,6 +1,7 @@
 var spicedPg = require('spiced-pg');
-var config = require('./passwords.json');
-var db = spicedPg('postgres:' + config.name + ':' + config.password + '@localhost:5432/events');
+// var config = require('./passwords.json');
+// var db = spicedPg('postgres:' + config.name + ':' + config.password +
+// '@localhost:5432/events');
 // var bodyParser = require('body-parser');
 // var cookieParser = require('cookie-parser');
 // var cookieSession = require('cookie-session');
