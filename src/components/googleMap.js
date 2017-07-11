@@ -1,10 +1,27 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import Map, {GoogleApiWrapper, maps, Marker, InfoWindow} from 'google-maps-react';
+import Map, {GoogleApiWrapper, maps, InfoWindow} from 'google-maps-react';
+import {
+  withGoogleMap,
+  GoogleMap,
+  Marker,
+} from "react-google-maps";
 import mapStyle from "./map_style";
 //https://github.com/fullstackreact/google-maps-react/issues/59
 
-export class MyMap extends React.Component {
+
+const InitialMap = withGoogleMap(props => (
+    <GoogleMap
+        defaultZoom={13}
+        defaultCenter={{lat: 52.519616, lng: 13.414064}}
+        defaultOptions={{ styles: mapStyle }}
+    >
+        {props.markers}
+    </GoogleMap>
+));
+
+
+export default class MyMap extends React.Component {
     constructor(props){
         super(props);
 
@@ -45,8 +62,8 @@ export class MyMap extends React.Component {
     }
 
     render() {
-        // console.log(window.google)
-        let google = window.google
+        console.log(window.google);
+        let google = window.google;
         const events = this.props.events.data && this.props.events.data.filter(function(event) {
             // console.log(event, "this is events after filter");
             if (!event.place || !event.place.location) {
@@ -86,24 +103,20 @@ export class MyMap extends React.Component {
 
           </InfoWindow>;
 
-        MapFuncMarkers && MapFuncMarkers.push(infoWindow);
+        //MapFuncMarkers && MapFuncMarkers.push(infoWindow);
+
+
 
         return (
-            <Map
-                google={window.google}
-                zoom={13}
-                styles={mapStyle}
-                initialCenter={{lat: 52.519616, lng: 13.414064}}
-                disableDefaultUI= {true}
-                >
-                {MapFuncMarkers}
-
-            </Map>
+            <InitialMap
+                containerElement={
+                    <div style={{height: '100vh', width: '100vw'}}/>
+                }
+                mapElement={
+                    <div style={{height: '100%'}}/>
+                }
+                markers={MapFuncMarkers}
+            />
         )
     }
 }
-
-export default GoogleApiWrapper({
-    apiKey: "AIzaSyD1gktLYHktL4HBVTsR-1zjNyPBUwdVjV0",
-    version: 3.26
-})(MyMap)
