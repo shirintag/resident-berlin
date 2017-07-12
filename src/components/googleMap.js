@@ -111,7 +111,7 @@ export default class MyMap extends React.Component {
                     <img src={this.state.eventPicture}/>
                     <h4>"name: "{this.state.selectedPlace.name}</h4>
                     <h6>"start_time & end_time" {this.state.selectedPlace.start_time} {this.state.selectedPlace.end_time}</h6>
-                    <p>"description: " {this.state.selectedPlace.description}</p>
+                    <div className="description" dangerouslySetInnerHTML={{__html: this.state.selectedPlace.description}}></div>
                 </div>
 
             </OverlayView>;

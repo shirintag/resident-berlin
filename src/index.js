@@ -6,6 +6,11 @@ import FacebookLogin from 'react-facebook-login';
 import NavBar from "./components/NavBar";
 import 'whatwg-fetch';
 
+function processDescription(description) {
+    //return "<p>" + description.split("\n").join("</p><p>") + "</p>";
+    return description.split("\n").join("<br>");
+}
+
 class  App extends Component {
     constructor(props){
         super(props);
@@ -49,6 +54,8 @@ class  App extends Component {
                     //console.log(res);
                     console.log(_this.state);
                     let events = _this.state.events;
+                    res.description = processDescription(res.description);
+                    console.log(res.description);
                     events.push(res);
                     _this.setState({
                         events: events
