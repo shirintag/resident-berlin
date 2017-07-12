@@ -1,13 +1,17 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import Map, {GoogleApiWrapper, maps, InfoWindow} from 'google-maps-react';
 import {
   withGoogleMap,
   GoogleMap,
-  Marker,
+  Marker, InfoWindow, OverlayView
 } from "react-google-maps";
 import mapStyle from "./map_style";
 //https://github.com/fullstackreact/google-maps-react/issues/59
+
+
+function getPixelPositionOffset(width, height) {
+  return { x: -(width / 2), y: -(height + 20) };
+}
 
 
 const InitialMap = withGoogleMap(props => (
@@ -29,7 +33,8 @@ export default class MyMap extends React.Component {
             events:{},
             showingInfoWindow: false,
             selectedPlace: {},
-            eventPicture: ""
+            eventPicture: "",
+            activeMarkerPosition: {lat: 52.519616, lng: 13.414064}
         };
         this.onMarkerClick = this.onMarkerClick.bind(this);
     }
@@ -51,18 +56,24 @@ export default class MyMap extends React.Component {
         });
     }
 
-    onMarkerClick(props, marker, e) {
-        console.log(props);
-        this.getPhotoEvents(props.data.id)
-        this.setState({
-            selectedPlace: props.data,
-            activeMarker: marker,
-            showingInfoWindow: true
-        });
+    // nested function to be able to pass event information
+    onMarkerClick(event) {
+        let _this = this;
+        return function(e) {
+            _this.setState({
+                eventPicture: "",
+                selectedPlace: event,
+                activeMarker: event.id,
+                showingInfoWindow: true,
+                activeMarkerPosition: {lat: event.place.location.latitude,
+                                       lng: event.place.location.longitude}
+            });
+            _this.getPhotoEvents(event.id);
+        }
     }
 
     render() {
-        console.log(window.google);
+        // console.log(window.google);
         let google = window.google;
         const events = this.props.events.data && this.props.events.data.filter(function(event) {
             // console.log(event, "this is events after filter");
@@ -78,7 +89,7 @@ export default class MyMap extends React.Component {
                 // console.log(event, "this is event in map");
                 return (
                     <Marker
-                    onClick={this.onMarkerClick}
+                    onClick={this.onMarkerClick(event)}
                     position={{lat: event.place.location.latitude, lng: event.place.location.longitude}}
                     name={'event' + i}
                     icon={{
@@ -91,21 +102,21 @@ export default class MyMap extends React.Component {
             });
 
         const infoWindow =
-            <InfoWindow
-                marker={this.state.activeMarker}
+            <OverlayView
+                position={this.state.activeMarkerPosition}
+                mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
+                getPixelPositionOffset={getPixelPositionOffset}
                 visible={this.state.showingInfoWindow}>
-                <div>
+                <div className={this.state.showingInfoWindow ? "info-window": "info-window hidden"}>
                     <img src={this.state.eventPicture}/>
                     <h4>"name: "{this.state.selectedPlace.name}</h4>
                     <h6>"start_time & end_time" {this.state.selectedPlace.start_time} {this.state.selectedPlace.end_time}</h6>
                     <p>"description: " {this.state.selectedPlace.description}</p>
                 </div>
 
-          </InfoWindow>;
-
-        //MapFuncMarkers && MapFuncMarkers.push(infoWindow);
-
-
+            </OverlayView>;
+        // console.log(this.state.activeMarker);
+        MapFuncMarkers && MapFuncMarkers.push(infoWindow);
 
         return (
             <InitialMap

@@ -24,3 +24,16 @@
     height: 80px;
 
 }
+
+.info-window {
+    background: rgba(198, 198, 198, 0.46);
+}
+
+.hidden {
+    display: none;
+}
+
+.info-window img {
+    width: 200px;
+    height: 200px;
+}
