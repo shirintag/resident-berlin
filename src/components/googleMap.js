@@ -8,6 +8,17 @@ import {
 import mapStyle from "./map_style";
 //https://github.com/fullstackreact/google-maps-react/issues/59
 
+const mouseEvents = ['click',
+	'mousedown', 'mousemove', 'mouseover',
+  'mouseout', 'mouseup', 'mousewheel',
+  'DOMMouseScroll', 'touchstart', 'touchend',
+  'touchmove', 'dblclick', 'contextmenu'
+];
+
+function cancelEvent(e) {
+  e.cancelBubble = true;
+  e.stopPropagation && e.stopPropagation();
+}
 
 function getPixelPositionOffset(width, height) {
   return { x: -(width / 2), y: -(height + 20) };
@@ -109,12 +120,22 @@ export default class MyMap extends React.Component {
                 visible={this.state.showingInfoWindow}>
                 <div className={this.state.showingInfoWindow ? "info-window": "info-window hidden"}>
                     <img src={this.state.eventPicture}/>
-                    <h4>"name: "{this.state.selectedPlace.name}</h4>
+                    <h4>{this.state.selectedPlace.name}</h4>
                     <h6>"start_time & end_time" {this.state.selectedPlace.start_time} {this.state.selectedPlace.end_time}</h6>
                     <div className="description" dangerouslySetInnerHTML={{__html: this.state.selectedPlace.description}}></div>
                 </div>
 
             </OverlayView>;
+
+        // we need to get parent element of info-window to turn off events
+        // that control the map
+        // https://stackoverflow.com/questions/38842632/how-to-make-google-maps-custom-overlay-above-markers-click-zone
+        var div = document.querySelector(".info-window");
+        if (div && this.state.showingInfoWindow) {
+            mouseEvents.map((event) => {
+                google.maps.event.addDomListener(div.parentElement, event, cancelEvent)
+            });
+        }
         // console.log(this.state.activeMarker);
         MapFuncMarkers && MapFuncMarkers.push(infoWindow);
 

@@ -26,7 +26,12 @@
 }
 
 .info-window {
-    background: rgba(198, 198, 198, 0.46);
+    background: rgb(255, 255, 255);
+    max-width: 400px;
+    max-height: 400px;
+    overflow: scroll;
+    padding: 15px;
+    cursor: default;
 }
 
 .hidden {
