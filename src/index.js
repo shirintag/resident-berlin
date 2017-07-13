@@ -4,12 +4,9 @@ import MyMap from "./components/googleMap";
 import FBLogin from "./components/login_facebook";
 import FacebookLogin from 'react-facebook-login';
 import NavBar from "./components/NavBar";
+import processEvent from "./utils/processEvents";
 import 'whatwg-fetch';
 
-function processDescription(description) {
-    //return "<p>" + description.split("\n").join("</p><p>") + "</p>";
-    return description.split("\n").join("<br>");
-}
 
 class  App extends Component {
     constructor(props){
@@ -54,9 +51,7 @@ class  App extends Component {
                     //console.log(res);
                     console.log(_this.state);
                     let events = _this.state.events;
-                    res.description = processDescription(res.description);
-                    res.start_time = new Date(res.start_time);
-                    res.end_time = new Date(res.end_time);
+                    res = processEvent(res);
                     events.push(res);
                     _this.setState({
                         events: events
