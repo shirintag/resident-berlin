@@ -30,6 +30,7 @@ const InitialMap = withGoogleMap(props => (
         defaultZoom={13}
         defaultCenter={{lat: 52.519616, lng: 13.414064}}
         defaultOptions={{ styles: mapStyle }}
+        ref={(map) => map && map.panTo(props.center)}
     >
         {props.markers}
     </GoogleMap>
@@ -148,6 +149,7 @@ export default class MyMap extends React.Component {
                     <div style={{height: '100%'}}/>
                 }
                 markers={MapFuncMarkers}
+                center={this.state.activeMarkerPosition}
             />
         )
     }
