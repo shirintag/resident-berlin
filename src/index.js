@@ -55,7 +55,8 @@ class  App extends Component {
                     console.log(_this.state);
                     let events = _this.state.events;
                     res.description = processDescription(res.description);
-                    console.log(res.description);
+                    res.start_time = new Date(res.start_time);
+                    res.end_time = new Date(res.end_time);
                     events.push(res);
                     _this.setState({
                         events: events

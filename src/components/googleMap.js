@@ -43,7 +43,7 @@ export default class MyMap extends React.Component {
         this.state = {
             events:{},
             showingInfoWindow: false,
-            selectedPlace: {},
+            selectedPlace: {start_time: new Date(), end_time: new Date()},
             eventPicture: "",
             activeMarkerPosition: {lat: 52.519616, lng: 13.414064}
         };
@@ -121,7 +121,7 @@ export default class MyMap extends React.Component {
                 <div className={this.state.showingInfoWindow ? "info-window": "info-window hidden"}>
                     <img src={this.state.eventPicture}/>
                     <h4>{this.state.selectedPlace.name}</h4>
-                    <h6>"start_time & end_time" {this.state.selectedPlace.start_time} {this.state.selectedPlace.end_time}</h6>
+                    <h6>{this.state.selectedPlace.start_time.toLocaleString()} - {this.state.selectedPlace.end_time.toLocaleString()}</h6>
                     <div className="description" dangerouslySetInnerHTML={{__html: this.state.selectedPlace.description}}></div>
                 </div>
 
