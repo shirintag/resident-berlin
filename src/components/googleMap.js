@@ -7,6 +7,9 @@ import {
 } from "react-google-maps";
 import mapStyle from "./map_style";
 //https://github.com/fullstackreact/google-maps-react/issues/59
+import MarkerClusterer from "react-google-maps/lib/addons/MarkerClusterer"
+
+console.log(MarkerClusterer);
 
 const mouseEvents = ['click',
 	'mousedown', 'mousemove', 'mouseover',
@@ -32,7 +35,15 @@ const InitialMap = withGoogleMap(props => (
         defaultOptions={{ styles: mapStyle }}
         ref={(map) => map && map.panTo(props.center)}
     >
+        <MarkerClusterer
+            averageCenter
+            enableRetinaIcons
+            gridSize={16}
+            zoomOnClick={false}
+            maxZoom={15}
+        >
         {props.markers}
+        </MarkerClusterer>
     </GoogleMap>
 ));
 
@@ -109,6 +120,7 @@ export default class MyMap extends React.Component {
                         scaledSize: google ? new google.maps.Size(30,50) : null
                     }}
                     data={event}
+                    noRedraw
                     />
                 );
             });
@@ -116,7 +128,7 @@ export default class MyMap extends React.Component {
         const infoWindow =
             <OverlayView
                 position={this.state.activeMarkerPosition}
-                mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
+                mapPaneName={OverlayView.FLOAT_PANE}
                 getPixelPositionOffset={getPixelPositionOffset}
                 visible={this.state.showingInfoWindow}>
                 <div className={this.state.showingInfoWindow ? "info-window": "info-window hidden"}>
