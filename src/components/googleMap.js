@@ -133,11 +133,11 @@ export default class MyMap extends React.Component {
             >
                 <div className="info-window">
                     <img src={event.picture}/>
+                    <div id="closeInfoWindow">X</div>
                     <h4>{event.name}</h4>
                     <h6>{event.start_time.toLocaleString()} - {event.end_time.toLocaleString()}</h6>
                     <div className="description" dangerouslySetInnerHTML={{__html: event.description}}></div>
                 </div>
-
             </OverlayView>;
 
         // we need to get parent element of info-window to turn off events
@@ -148,7 +148,14 @@ export default class MyMap extends React.Component {
             mouseEvents.map((event) => {
                 google.maps.event.addDomListener(div.parentElement, event, cancelEvent)
             });
+            div.className = "info-window"
         }
+
+        div && div.querySelector("#closeInfoWindow").addEventListener( "click",
+            () => {
+                div.className += " hidden"
+        });
+
         this.setState({
             infoWindow: infoWindow,
             eventPicture: event.picture,
@@ -156,8 +163,8 @@ export default class MyMap extends React.Component {
             activeMarker: event.id,
             showingInfoWindow: true,
             activeMarkerPosition: {lat: event.place.location.latitude,
-                                   lng: event.place.location.longitude}
-        });
+                lng: event.place.location.longitude}
+            });
     }
 
     render() {
