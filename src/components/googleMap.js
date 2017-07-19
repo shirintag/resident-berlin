@@ -24,7 +24,7 @@ function cancelEvent(e) {
 }
 
 function getPixelPositionOffset(width, height) {
-  return { x: -(width / 2), y: -(height + 20) };
+  return { x: -(width + 20), y: -(height / 2) };
 }
 
 
