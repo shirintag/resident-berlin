@@ -45,13 +45,12 @@ class  App extends Component {
           }).then(function(json) {
             // Remove slice to show all events
             let ids = json.event_ids.slice(0,50);
-            var i,j,temparray,chunk = 50;
+            let i, chunk = 50;
 
             // create batches of 50 ids
-            var batches = [];
+            let batches = [];
             for (i=0; i<ids.length; i+=chunk) {
-                temparray = ids.slice(i,i+chunk);
-                batches.push(temparray);
+                batches.push(ids.slice(i,i+chunk));
             }
 
             batches.forEach(function(batch) {
@@ -60,7 +59,9 @@ class  App extends Component {
                     batch: batch
                 }, (res) => {
                     // parse JSON bodies, and processEvents
-                    let batch_events = res.map((e) => {return processEvent(JSON.parse(e.body))})
+                    let batch_events = res.map((e) => {
+                        return processEvent(JSON.parse(e.body))
+                    });
                     let events = _this.state.events;
                     events.push.apply(events, batch_events);  // extend array
                     _this.setState({
