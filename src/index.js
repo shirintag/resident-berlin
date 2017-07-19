@@ -44,20 +44,30 @@ class  App extends Component {
               return res.json()
           }).then(function(json) {
             // Remove slice to show all events
-            let ids = json.event_ids.slice(0,10);
-            console.log(ids);
-            ids.forEach(function(id) {
-                FB.api(String(id), (res) => {
-                    //console.log(res);
-                    console.log(_this.state);
+            let ids = json.event_ids.slice(0,50);
+            var i,j,temparray,chunk = 50;
+
+            // create batches of 50 ids
+            var batches = [];
+            for (i=0; i<ids.length; i+=chunk) {
+                temparray = ids.slice(i,i+chunk);
+                batches.push(temparray);
+            }
+
+            batches.forEach(function(batch) {
+                batch = batch.map((id) => {return {relative_url: String(id) } } );
+                FB.api('/', 'POST', {
+                    batch: batch
+                }, (res) => {
+                    // parse JSON bodies, and processEvents
+                    let batch_events = res.map((e) => {return processEvent(JSON.parse(e.body))})
                     let events = _this.state.events;
-                    res = processEvent(res);
-                    events.push(res);
+                    events.push.apply(events, batch_events);  // extend array
                     _this.setState({
                         events: events
                     });
                 });
-            })
+            });
         });
 
     }
