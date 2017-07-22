@@ -46,7 +46,8 @@ if (require.main == module) {
 } else {
     module.exports = require('webpack-dev-middleware')(webpack(conf), {
         watchOptions: {
-            aggregateTimeout: 300
+            aggregateTimeout: 300,
+            ignored: /node_modules/
         },
         publicPath: '/'
     });
