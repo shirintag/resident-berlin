@@ -39,8 +39,9 @@ const InitialMap = withGoogleMap(props => (
             averageCenter
             enableRetinaIcons
             gridSize={60}
-            zoomOnClick={false}
+            zoomOnClick={true}
             maxZoom={14}
+            imagePath= "imgs/"
         >
         {props.markers}
         {props.infoWindow}
@@ -109,8 +110,8 @@ export default class MyMap extends React.Component {
                     position={{lat: event.place.location.latitude, lng: event.place.location.longitude}}
                     name={'event' + i}
                     icon={{
-                        url: "imgs/icon.png",
-                        scaledSize: google ? new google.maps.Size(30,50) : null
+                        url: "imgs/marker.png",
+                        scaledSize: google ? new google.maps.Size(30,35) : null
                     }}
                     data={event}
                     noRedraw
@@ -131,13 +132,20 @@ export default class MyMap extends React.Component {
                 mapPaneName={OverlayView.FLOAT_PANE}
                 getPixelPositionOffset={getPixelPositionOffset}
             >
-                <div className="info-window">
-                    <img src={event.picture}/>
-                    <div id="closeInfoWindow">X</div>
-                    <h4>{event.name}</h4>
-                    <h6>{event.start_time.toLocaleString()} - {event.end_time.toLocaleString()}</h6>
-                    <div className="description" dangerouslySetInnerHTML={{__html: event.description}}></div>
+            <div className="info-window ">
+                <div id="closeInfoWindow">X</div>
+                <div className="info-window-wrapper">
+                    <div className="infoWindow-header">
+                        <img src={event.picture}/>
+                        <div className="infoWindow-title">
+                            <h2>{event.name}</h2>
+                            <h4 className="eveny-time">{event.start_time.toLocaleString()} - {event.end_time.toLocaleString()}</h4>
+                        </div>
+                    </div>
+                    <hr className="fancy-line"></hr>
+                    <p className="description" dangerouslySetInnerHTML={{__html: event.description}}></p>
                 </div>
+            </div>
             </OverlayView>;
 
         // we need to get parent element of info-window to turn off events
